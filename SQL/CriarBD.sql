@@ -3,9 +3,9 @@ use Portifolio;
 
 
 create table tbProjeto(
-	id varchar(50) unique
+	id varchar(50),
     Nome varchar(50) not null,
-    Descricao varchar (21844) 
+    Descricao varchar(21844), 
     Primary key (id)
 )CHARSET=utf8;
 
@@ -21,7 +21,7 @@ create table tbTagsProjeto(
     idTag varchar(50) not null,
     foreign key (idProjeto) references tbProjeto (id),
     foreign key (idTag) references tbTag (id) 
-)
+);
 
 
 create table tbFoto(
@@ -33,15 +33,15 @@ create table tbFoto(
 create table tbFotoProjeto(
     idProjeto varchar(50) not null,
     idFoto varchar(50) not null,
-    foreign key (idProjeto) references tbProjeto (id),
-    foreign key (idFoto) references tbFoto (id) 
-)
+    foreign key(idProjeto) references tbProjeto (id),
+    foreign key(idFoto) references tbFoto (id) 
+);
 
 
 
 create table tbVideos(
 	id varchar(50) not null,
-    link varchar (255) not null,
+    link varchar(255) not null,
     primary key(id),
 );
 
@@ -50,5 +50,5 @@ create table tbVideoProjeto(
     idVideo varchar(50) not null,
     foreign key (idProjeto) references tbProjeto (id),
     foreign key (idVideo) references tbVideos (id) 
-)
+);
 
