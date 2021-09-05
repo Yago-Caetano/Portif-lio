@@ -23,10 +23,7 @@ namespace Portifolio_backend.DAO
             throw new System.NotImplementedException();
         }
 
-        protected override void SetTipoChave()
-        {
-            throw new System.NotImplementedException();
-        }
+
     }
 
 }
