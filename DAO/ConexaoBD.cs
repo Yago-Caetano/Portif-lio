@@ -13,7 +13,7 @@ namespace Portifolio_backend.DAO
             conn_string.UserID = "root" ;// "user"
             conn_string.Password = "root" ;// "123456" "123456"
             //conn_string.Password =  "123456"; 
-            conn_string.Database = "PocAtembiciV1";
+            conn_string.Database = "portifolio";
 
             MySqlConnection MyCon = new MySqlConnection(conn_string.ToString());
             MyCon.Open();

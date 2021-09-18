@@ -40,7 +40,7 @@ namespace Portifolio_backend.Controllers
             {
                 //ValidateData(model, Operacao);
                 var resultado=DAO.Insert(model);
-                if (resultado == -1)
+                if (resultado == false)
                     throw new Exception("Erro ao cadastrar!");
                 return Ok(retornoSucesso);
             }

@@ -6,7 +6,7 @@ namespace Portifolio_backend.Models
 
     public byte[] Foto {get;set;} 
 
-    public int IdProjeto {get;set;}
+    public string IdProjeto {get;set;}
     
     }
 

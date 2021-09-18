@@ -103,7 +103,11 @@ namespace Portifolio_backend.DAO
        
         private string CreateID()
         {
-            Guid mGuid = new Guid();
+            byte[] randomByte = new byte[16];
+
+            new Random().NextBytes(randomByte);
+            
+            Guid mGuid = new Guid(randomByte);
 
             return mGuid.ToString();
         }
@@ -111,7 +115,7 @@ namespace Portifolio_backend.DAO
         {
             int tentativas = 0;
             model.id = CreateID();
-            /* var table = HelperDAO.ExecutaProcSelect("spVerificaIDusuario",
+            /*var table = HelperDAO.ExecutaProcSelect("spVerificaIDusuario",
                  new MySqlParameter[] { new MySqlParameter("idSerial", model.id) });*/
 
             while
@@ -129,9 +133,10 @@ namespace Portifolio_backend.DAO
             else
                 return true;
         }
-       
 
-
-
+        public static implicit operator PadraoDAO<T>(FotoDAO v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
