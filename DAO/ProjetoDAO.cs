@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Data;
 using MySqlConnector;
 using Portifolio_backend.Models;
@@ -10,12 +11,11 @@ namespace Portifolio_backend.DAO
 
         protected override MySqlParameter[] CriaParametros(ProjetoModel model)
         {
-            MySqlParameter[] parametros = new MySqlParameter[4];
+            MySqlParameter[] parametros = new MySqlParameter[3];
 
             parametros[0] = new MySqlParameter("_id", model.id);
             parametros[1] = new MySqlParameter("_Nome", model.Nome);
             parametros[2] = new MySqlParameter("_Descricao", model.Descricao);
-            parametros[3] = new MySqlParameter("_idTag",model.idTag);
 
             return parametros;
         }
@@ -34,6 +34,33 @@ namespace Portifolio_backend.DAO
         {
             Tabela = "tbProjeto"; 
         }
+
+        public override List<ProjetoModel> Listagem()
+        {
+            List<ProjetoModel> retLista = base.Listagem();
+            foreach(ProjetoModel p in retLista)
+            {
+                p.Fotos = new FotoDAO().RecuperarFotoPorProjeto((string)p.id);
+            }
+            return retLista;
+        }
+
+        public override ProjetoModel Consulta (object id,bool Simplificado=false)
+        {
+            ProjetoModel retValue = new ProjetoModel();
+            retValue = base.Consulta(id,Simplificado);
+            if(retValue != null)
+            {
+                retValue.Fotos = new FotoDAO().RecuperarFotoPorProjeto((string)retValue.id);
+
+                retValue.Tags = new TagsProjetoDAO().RecuperarTagsPorProjeto((string) retValue.id);
+
+                retValue.Videos = new VideoDAO().RecuperarVideoPorProjeto((string) retValue.id);
+            }
+            
+            return retValue;
+        }
+        
 
     }
 

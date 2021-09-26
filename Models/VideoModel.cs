@@ -5,6 +5,8 @@ namespace Portifolio_backend.Models
     public class VideoModel : PadraoViewModel{ 
 
     public string Link {get;set;} 
+
+    public string IdProjeto {get;set;}
     
     }
 

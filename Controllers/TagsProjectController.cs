@@ -11,28 +11,22 @@ using Microsoft.Extensions.Primitives;
 
 namespace Portifolio_backend.Controllers{
 
-        public class TagController : PadraoController<TagModel>
+        public class TagsProjectController : PadraoController<TagsProjectModel>
         {
-            public TagController(){DAO = new TagDAO();}
+            public TagsProjectController(){DAO = new TagsProjetoDAO();}
 
-
-            [HttpPost]
-            [Route("Tag")]
-            public override async Task<IActionResult> Save([FromBody] TagModel model,bool checkIdBeforeInsertion = true)
+            public override async Task<IActionResult> Save([FromBody] TagsProjectModel model,bool checkIdBeforeInsertion = false)
             {
                 return base.Save(model,checkIdBeforeInsertion).Result;
             }
 
-            [HttpGet]
-            [Route("Tag")]
             public override async Task<IActionResult> ToRecover(string id = null)
             {
                 return  base.ToRecover(id).Result;
             }
 
 
-            [HttpPut]
-            [Route("Tag")]
+
              public override async Task<IActionResult> Edit(string id)
              {
                  if(id!= null)
@@ -41,8 +35,22 @@ namespace Portifolio_backend.Controllers{
                     return BadRequest("Id inválido");
              }
 
-
+        public IActionResult GetTagsByProject(string idProject)
+        {
+            try
+            {
+                TagsProjetoDAO MDAO = (TagsProjetoDAO)DAO;
+                var retList = MDAO.RecuperarTagsPorProjeto(idProject);
+                return Ok(retList);
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
         }
+
+
+    }
 
 
 }

@@ -18,9 +18,11 @@ namespace Portifolio_backend.Controllers{
 
             [HttpPost]
             [Route("Project")]
-            public override async Task<IActionResult> Save([FromBody] ProjetoModel model)
+            public override async Task<IActionResult> Save([FromBody] ProjetoModel model,bool checkIdBeforeInsertion = true)
             {
                 bool imgSucessfulSaved = true;
+                bool tagSucessfulSaved = true;
+                bool vidSucessfulSaved = true;
 
                 var requ = (ObjectResult) await base.Save(model);
                 if(requ.StatusCode != 200)
@@ -41,9 +43,42 @@ namespace Portifolio_backend.Controllers{
                     }
                 }
                 
+
+                //insert tags
+                foreach(TagsProjectModel t in model.Tags)
+                {
+                    t.idProjeto = (string) model.id;
+
+                    var reqTags= (ObjectResult) await new TagsProjectController().Save(t);
+                    if(reqTags.StatusCode != 200)
+                    {
+                        tagSucessfulSaved = false;
+                        break;
+                    }
+    
+                }
+
+                //insert videos
+                foreach(VideoModel v in model.Videos)
+                {
+                    v.IdProjeto = (string) model.id;
+                    
+                    var reqVideo = (ObjectResult) await new VideoController().Save(v);
+                    if(reqVideo.StatusCode != 200)
+                    {
+                        vidSucessfulSaved = false;
+                        break;
+                    }
+                }
+
+
                 if(!imgSucessfulSaved)
                 {
                     return BadRequest("Falha ao cadastrar imagens");
+                }
+                else if(!tagSucessfulSaved)
+                {
+                    return BadRequest("Falha ao cadastrar Tags");
                 }
 
                 return Ok("Cadastrado com sucesso");
@@ -60,7 +95,7 @@ namespace Portifolio_backend.Controllers{
             [Route("Projects")]
             public async Task<IActionResult> GetAllProjects()
             {
-                return Ok();
+                return base.ToRecover(null).Result;
             }
 
             [HttpPut]

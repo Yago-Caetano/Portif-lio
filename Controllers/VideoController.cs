@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Portifolio_backend.Controllers{
 
-            public class FotoController : PadraoController<FotoModel>
+            public class VideoController : PadraoController<VideoModel>
             {
-                public FotoController(){DAO = new FotoDAO();}
+                public VideoController(){DAO = new VideoDAO();}
 
-            public override async Task<IActionResult> Save(FotoModel model,bool checkIdBeforeInsertion = true)
+            public override async Task<IActionResult> Save(VideoModel model,bool checkIdBeforeInsertion = true)
             {
                 return base.Save(model,checkIdBeforeInsertion).Result;
             }

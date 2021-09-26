@@ -32,14 +32,14 @@ namespace Portifolio_backend.Controllers
             }
         }
 
-        public virtual async Task<IActionResult> Save (T model)
+        public virtual async Task<IActionResult> Save (T model,bool checkIdBeforeInsertion = true)
         {
             string retornoSucesso = "Cadastrado com sucesso";
             string retornoFalha = "Falha no cadastro";
             try
             {
                 //ValidateData(model, Operacao);
-                var resultado=DAO.Insert(model);
+                var resultado=DAO.Insert(model,checkIdBeforeInsertion);
                 if (resultado == false)
                     throw new Exception("Erro ao cadastrar!");
                 return Ok(retornoSucesso);
@@ -66,7 +66,7 @@ namespace Portifolio_backend.Controllers
                     return Ok(JsonSerializer.Serialize(model));
                 }
             }
-            catch
+            catch(Exception e)
             {
                 return NotFound("Não foi possivel recuperar a informação");
             

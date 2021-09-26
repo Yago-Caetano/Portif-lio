@@ -30,7 +30,6 @@ namespace Portifolio_backend.DAO
         protected override void SetTabela()
         {
             Tabela = "tbTags";
-
         }
 
 

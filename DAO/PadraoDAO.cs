@@ -28,16 +28,14 @@ namespace Portifolio_backend.DAO
         protected abstract T MontaModel(DataRow registro,bool Simplificado=false);
         protected abstract void SetTabela();
 
-        public virtual Boolean Insert(T model, bool getId = false)
+        public virtual Boolean Insert(T model,bool checkIdBeforeInsertion = true, bool getId = false)
         {
 
-                if (ConfirmID(model))
-                {
-                     HelperDAO.ExecutaProc("spInsert_" + Tabela, CriaParametros(model), getId);
-                     return true;
-                }
-                else
-                    return false;
+                if (checkIdBeforeInsertion && !ConfirmID(model))
+                     return false;
+
+                HelperDAO.ExecutaProc("spInsert_" + Tabela, CriaParametros(model), getId);
+                return true;
 
         }
         
