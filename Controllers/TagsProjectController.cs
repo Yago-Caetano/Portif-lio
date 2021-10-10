@@ -27,10 +27,10 @@ namespace Portifolio_backend.Controllers{
 
 
 
-             public override async Task<IActionResult> Edit(string id)
+             public override async Task<IActionResult> Edit(string id,TagsProjectModel model)
              {
                  if(id!= null)
-                    return base.Edit(id).Result;
+                    return base.Edit(id,model).Result;
                 else
                     return BadRequest("Id inválido");
              }

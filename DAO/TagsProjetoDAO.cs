@@ -49,6 +49,17 @@ namespace Portifolio_backend.DAO
             return lista;
         }
 
+        
+        public void RemoverTagsPeloProjeto(string idProjeto)
+        {
+            var p = new MySqlParameter[]
+            {
+                 new MySqlParameter("_idProjeto",idProjeto),
+            };
+            HelperDAO.ExecutaProc("spDelete_tbTagsProjeto", p);
+        
+        }
+
     }
 
 }

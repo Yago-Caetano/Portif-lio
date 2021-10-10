@@ -52,6 +52,16 @@ namespace Portifolio_backend.DAO
             return lista;
         }
 
+        public void RemoverVideosPeloProjeto(string idProjeto)
+        {
+            var p = new MySqlParameter[]
+            {
+                 new MySqlParameter("_idProjeto",idProjeto),
+            };
+            HelperDAO.ExecutaProc("spDelete_tbVideoProjeto", p);
+        
+        }
+
 
     }
 

@@ -84,7 +84,7 @@ namespace Portifolio_backend.Controllers
         }
 
 
-        public virtual async Task<IActionResult> Edit(string id)
+        public virtual async Task<IActionResult> Edit(string id,T newModel)
         {
             try
             {
@@ -93,7 +93,8 @@ namespace Portifolio_backend.Controllers
                     return NotFound("Dado não econtrado");
                 else
                 {
-                    DAO.Update(model);
+                    newModel.id = id;
+                    DAO.Update(newModel);
                     return Ok("Dado editado");
                 }
             }

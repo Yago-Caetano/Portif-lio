@@ -39,7 +39,7 @@ create table tbFotoProjeto(
 
 
 
-create table tbVideosspConsultaID(
+create table tbVideos(
 	id varchar(50) not null,
     link varchar(255) not null,
     primary key(id)

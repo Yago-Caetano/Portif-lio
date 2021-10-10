@@ -54,6 +54,16 @@ namespace Portifolio_backend.DAO
             return lista;
         }
 
+        public void RemoverFotosPeloProjeto(string idProjeto)
+        {
+            var p = new MySqlParameter[]
+            {
+                 new MySqlParameter("_idProjeto",idProjeto),
+            };
+            HelperDAO.ExecutaProc("spDelete_tbFotoProjeto", p);
+        
+        }
+
     }
 
 }

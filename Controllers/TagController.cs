@@ -33,12 +33,19 @@ namespace Portifolio_backend.Controllers{
 
             [HttpPut]
             [Route("Tag")]
-             public override async Task<IActionResult> Edit(string id)
+             public override async Task<IActionResult> Edit(string id,TagModel model)
              {
                  if(id!= null)
-                    return base.Edit(id).Result;
+                    return base.Edit(id,model).Result;
                 else
                     return BadRequest("Id inválido");
+             }
+
+             [HttpDelete]
+             [Route("Tag")]
+             public override async Task<IActionResult> Delete(String Id)
+             {
+                return base.Delete(Id).Result;
              }
 
 

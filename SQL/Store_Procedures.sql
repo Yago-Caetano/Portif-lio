@@ -24,7 +24,7 @@ BEGIN
 	where id=_id;
     
 END$$
-DELIMITER ;
+
 -- -------------------------------------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------------------------------------- Tags
 DELIMITER $$
@@ -78,6 +78,27 @@ BEGIN
 END$$
 DELIMITER ;
 
+DELIMITER $$
+create PROCEDURE spDelete_tbFotoProjeto(_idProjeto  varchar(50))
+BEGIN
+  	DECLARE done INT DEFAULT FALSE;
+	declare idFoto varchar(50);
+	declare cursorFotos CURSOR FOR SELECT tbFotoProjeto.idFoto from tbFotoProjeto where idProjeto = _idProjeto;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+	Open cursorFotos;
+	cursor_loop:LOOP
+	FETCH cursorFotos INTO  idFoto;
+			IF  done=TRUE THEN
+				LEAVE cursor_loop;
+			END IF;
+			delete from tbFotoProjeto where tbFotoProjeto.idFoto=idFoto;
+			delete from tbFoto where tbFoto.id=idFoto;
+		END LOOP cursor_loop;
+		CLOSE cursorFotos;
+	SET  done=false;
+END$$
+
 -- --------------------------------------------------------------------------------------------------
 -- --------------------------------------------------------------------------------------------------
 
@@ -104,10 +125,34 @@ DELIMITER ;
 DELIMITER $$
 create PROCEDURE spConsulta_tbVideoProjeto(_idProjeto  varchar(50))
 BEGIN
-	select v.id, v.link from tbVideos as v inner join tbVideoProjeto as vp on v.id = vp.idVideo where vp.idProjeto = _idProjeto;
+	select v.id, v.link, vp.idProjeto from tbVideos as v inner join tbVideoProjeto as vp on v.id = vp.idVideo where vp.idProjeto = _idProjeto;
 END$$
 DELIMITER ;
 
+
+
+
+DELIMITER $$
+create PROCEDURE spDelete_tbVideoProjeto(_idProjeto  varchar(50))
+BEGIN
+  	DECLARE done INT DEFAULT FALSE;
+	declare idVideo varchar(50);
+	declare cursorVideo CURSOR FOR SELECT tbVideoProjeto.idVideo from tbVideoProjeto where idProjeto = _idProjeto;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+	Open cursorVideo;
+	cursor_loop:LOOP
+	FETCH cursorVideo INTO  idVideo;
+			IF  done=TRUE THEN
+				LEAVE cursor_loop;
+			END IF;
+			delete from tbVideoProjeto where tbVideoProjeto.idVideo=idVideo;
+			delete from tbVideos where tbVideos.id=idVideo;
+		END LOOP cursor_loop;
+		CLOSE cursorVideo;
+	SET  done=false;
+END$$
+DELIMITER ;
 -- ------------------------------------------------------------------ SP TAGS/PROJETOS ------------------------------------------------------------------ 
 
 DELIMITER $$
@@ -116,7 +161,7 @@ create PROCEDURE spInsert_tbTagsProjeto
 BEGIN
 	insert into tbTagsProjeto (idProjeto,idTag) values (_idProjeto,_idTag);
 END$$
-DELIMITER ;
+DELIMITER;
 
 DELIMITER $$
 create PROCEDURE spConsulta_tbTagsProjeto(_idProjeto  varchar(50))
@@ -125,6 +170,11 @@ BEGIN
 END$$
 DELIMITER ;
 
+DELIMITER $$
+create PROCEDURE spDelete_tbTagsProjeto(_idProjeto  varchar(50))
+BEGIN
+	delete from tbTagsProjeto where  idProjeto = _idProjeto;
+END$$
 -- ------------------------------------------------------------------ SP GENERICAS ------------------------------------------------------------------ 
 DELIMITER $$
 create PROCEDURE spConsultaID(tabela varchar(100),idserial varchar(50))
@@ -148,7 +198,7 @@ BEGIN
 	DEALLOCATE PREPARE stmt; 
     
 END$$
-DELIMITER ;
+DELIMITER;
 
 DELIMITER $$
 create PROCEDURE spConsulta(id varchar(50),tabela varchar(100))
@@ -160,6 +210,19 @@ BEGIN
         EXECUTE stmt;
 		DEALLOCATE PREPARE stmt; 
     end if;
+    
+END$$
+DELIMITER ;
+
+
+DELIMITER $$
+create PROCEDURE spDelete(id varchar(50),tabela varchar(100))
+BEGIN
+	DECLARE  SQL_Query varchar(600);
+	Set @SQL_Query =(Select Concat('delete from ',tabela,' where id = ',"'",id,"'",';'));
+    PREPARE stmt FROM @SQL_Query;
+    EXECUTE stmt;
+	DEALLOCATE PREPARE stmt; 
     
 END$$
 DELIMITER ;

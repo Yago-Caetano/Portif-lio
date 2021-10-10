@@ -62,7 +62,7 @@ namespace Portifolio_backend.Controllers{
                 foreach(VideoModel v in model.Videos)
                 {
                     v.IdProjeto = (string) model.id;
-                    
+
                     var reqVideo = (ObjectResult) await new VideoController().Save(v);
                     if(reqVideo.StatusCode != 200)
                     {
@@ -99,10 +99,17 @@ namespace Portifolio_backend.Controllers{
             }
 
             [HttpPut]
-            [Route("Projects")]
-             public override async Task<IActionResult> Edit(string id)
+            [Route("Project")]
+             public override async Task<IActionResult> Edit(string id,[FromBody] ProjetoModel newModel)
              {
-                 return base.Edit(id).Result;
+                 return base.Edit(id,newModel).Result;
+             }
+
+             [HttpDelete]
+             [Route("Project")]
+             public override async Task<IActionResult> Delete(string id)
+             {
+                 return base.Delete(id).Result;
              }
 
 

@@ -41,6 +41,8 @@ namespace Portifolio_backend.DAO
             foreach(ProjetoModel p in retLista)
             {
                 p.Fotos = new FotoDAO().RecuperarFotoPorProjeto((string)p.id);
+                p.Tags = new TagsProjetoDAO().RecuperarTagsPorProjeto((string) p.id);
+                p.Videos = new VideoDAO().RecuperarVideoPorProjeto((string) p.id);
             }
             return retLista;
         }
@@ -60,8 +62,56 @@ namespace Portifolio_backend.DAO
             
             return retValue;
         }
+
+        public override void Update(ProjetoModel newModel)
+        {
+            //last model
+            var oldModel = Consulta(newModel.id);
+
+            base.Update(newModel);
+
+
+            //update photos
+
+            //remove previous photos
+            new FotoDAO().RemoverFotosPeloProjeto((string) newModel.id);
+
+            foreach(FotoModel f in newModel.Fotos)
+            {
+                f.IdProjeto = (string) newModel.id;
+                new FotoDAO().Insert(f);
+            }
+
+            //update videos
+
+            //remove previous videos
+            new VideoDAO().RemoverVideosPeloProjeto((string) newModel.id);
+
+            foreach(VideoModel v in newModel.Videos)
+            {
+                v.IdProjeto = (string) newModel.id;
+                new VideoDAO().Insert(v);
+            }
+
+            //update tags
+
+            //remove previous tags
+            new TagsProjetoDAO().RemoverTagsPeloProjeto((string) newModel.id);
+
+            foreach(TagsProjectModel t in newModel.Tags)
+            {
+                t.idProjeto = (string) newModel.id;
+                new TagsProjetoDAO().Insert(t,false);
+            }
         
+        }
+
+        public override void Delete(object id)
+        {
+            base.Delete(id);
+        }
 
     }
 
+    
 }
